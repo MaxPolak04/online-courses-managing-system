@@ -2,13 +2,22 @@ from courses.programming_course import ProgrammingCourse
 from courses.admin_course import AdminCourse
 
 
-# dodanie docstringów - dokumentacji do klas i metod
-# uzupełnić wywołania błędów
 if __name__ == '__main__':
-    admin_course = AdminCourse('Linux - Command Prompt for Beginners', 'Jan Kowalski', 20, ['computer/laptop',])
-    admin_course.get_details()
-    admin_course.update_course(total_hours=30)
-    admin_course.get_details()
-    print(admin_course.total_courses)
-    print(admin_course.all_courses)
-    print(admin_course)
+    programming_course = ProgrammingCourse('Scripting in Python', 'John Smith', 10,
+                        'Python', 'Intermediate', ['Python basics', 'Bash scripting basics'])
+
+    admin_course = AdminCourse('Linux - Command Prompt for Beginners', 'Jan Kowalski',
+                               20, ['computer/laptop',])
+
+
+    ProgrammingCourse.display_number_of_total_courses()
+    ProgrammingCourse.delete_course('Scripting in Python')
+    ProgrammingCourse.display_number_of_total_courses()
+
+    print(programming_course)
+    ProgrammingCourse.display_all_courses()
+
+
+
+
+

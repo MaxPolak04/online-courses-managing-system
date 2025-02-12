@@ -13,7 +13,7 @@ class AdminCourse(Course):
     @tools.setter
     def tools(self, required_tools: list):
         if not isinstance(required_tools, list):
-            raise TypeError('')
+            raise TypeError('Wrong data type, required_tools must be list type.')
         for tool in required_tools:
             if not isinstance(tool, str):
                 raise InvalidTypeInList('')
