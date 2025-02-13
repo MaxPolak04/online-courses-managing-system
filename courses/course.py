@@ -4,33 +4,27 @@ from statistics import mean
 
 class Course(ABC):
     """
-    An abstract base class for courses.
+    The Course class represents an online course that you can enroll in.
 
     Attributes:
-    -----------
-    course_name : str
-        Course name.
-    instructor : str
-        Course instructor
-    total_hours : int
-        Total hours of the Course
-    ratings : list
-        Ratings of the Course
-    total_courses : int
-        Total number of Courses
-    all_courses : list
-        List of all Courses
+    course_name (str): The name of the course.
+    instructor (str): The name of the instructor.
+    total_hours (int): The total hours of the course.
+    total_courses (int): Number of total courses.
+    all_courses (list): A list containing the names of all courses.
     """
     total_courses = 0
     all_courses = []
 
     def __init__(self, course_name, instructor, total_hours):
         """
-        Initializes a new instance of the Course class.
+        Initializes a Course object.
 
-        :param course_name: str
-        :param instructor: str
-        :param total_hours: int
+        Args:
+        course_name (str): The name of the person.
+        instructor (str): The name of the instructor.
+        total_hours (int): The total hours of the course.
+        ratings (list): list of all ratings
         """
         self.course_name = course_name
         self.instructor = instructor
@@ -47,10 +41,26 @@ class Course(ABC):
 
     @property
     def course_name(self):
+        """
+        Gets the course_name attribute.
+
+        Returns:
+        str: The value of the attribute.
+        """
         return self._course_name
 
     @course_name.setter
     def course_name(self, name: str):
+        """
+        Sets the course_name attribute.
+
+        Args:
+        name (str): The new value for the attribute.
+
+        Raises:
+        TypeError: User specified a value of a type other than str.
+        DuplicateCourseError: If the name is in all_courses.
+        """
         if not isinstance(name, str):
             raise TypeError('Wrong data type, name must be str type.')
         if name in self.all_courses:
@@ -59,31 +69,70 @@ class Course(ABC):
 
     @property
     def instructor(self):
+        """
+        Gets the instructor attribute.
+
+        Returns:
+        str: The value of the attribute.
+        """
         return self._instructor
 
     @instructor.setter
     def instructor(self, full_name: str):
+        """
+        Sets the instructor attribute.
+
+        Args:
+        full_name (str): The new value for the attribute.
+
+        Raises:
+        TypeError: User specified a value of a type other than str.
+        """
         if not isinstance(full_name, str):
             raise TypeError('Wrong data type, full_name must be str type.')
         self._instructor = full_name
 
     @property
     def total_hours(self):
+        """
+        Gets the total_hours attribute.
+
+        Returns:
+        int: The value of the attribute.
+        """
         return self._total_hours
 
     @total_hours.setter
     def total_hours(self, value: (int, float)):
+        """
+        Sets the total_hours attribute.
+
+        Args:
+        value (int, float): The new value for the attribute.
+
+        Raises:
+        TypeError: User specified a value of a type other than int or float.
+        """
         if not isinstance(value, (int, float)):
             raise TypeError('Wrong data type, value must be int or float type.')
         self._total_hours = value
 
     def display_ratings(self):
-        """Returns the arithmetic average of all grades"""
+        """Returns the arithmetic average of all grades."""
         return round(mean(self.ratings), 1) if len(self.ratings) > 0 else 0
 
 
     def add_rating(self, rating: (int, float)):
-        """Adds a grade to the course"""
+        """
+        Adds a grade to the course.
+
+        Args:
+        rating (int, float): Course rating from 1 to 5.
+
+        Raises:
+        TypeError: User specified a value of a type other than int or float.
+        InvalidGradeError: User specified a value other than in the range [1, 5].
+        """
         if not isinstance(rating, (int, float)):
             raise TypeError('Wrong data type, rating must be int or float type.')
         if rating < 0.5 or rating > 5:
@@ -92,10 +141,11 @@ class Course(ABC):
 
     @abstractmethod
     def get_details(self):
+        """Abstract Method: Displays info about the course."""
         pass
 
     def update_course(self, course_name=None, instructor=None, total_hours=None):
-        """Updates a course parameters"""
+        """Updates a course parameters."""
         if course_name:
             self.course_name = course_name
         if instructor:
@@ -106,6 +156,19 @@ class Course(ABC):
 
     @classmethod
     def delete_course(cls, course_name: str):
+        """
+        Removes the course from the course list and decrements the course counter.
+        Adds a grade to the course.
+
+        Args:
+        course_name (str): Name of the course to delete
+
+        Raises:
+        TypeError: User specified a value of a type other than str.
+
+        Returns:
+        str: A message about whether the course has been found and deleted or not.
+        """
         if not isinstance(course_name, str):
             raise TypeError('Wrong data type, course_name must be str type.')
         for course in cls.all_courses:
@@ -118,17 +181,21 @@ class Course(ABC):
 
     @classmethod
     def display_number_of_total_courses(cls):
+        """Displays number of total courses."""
         print(f'Number of total courses: {cls.total_courses}.')
 
     @classmethod
     def display_all_courses(cls):
+        """Displays the names of all courses."""
         print(f'All courses: ')
         for idx, course in enumerate(cls.all_courses):
             print(f'{idx}. {course}')
 
 
 class DuplicateCourseError(Exception):
+    """Exception raised for errors in the duplicate course_name in list."""
     pass
 
 class InvalidGradeError(Exception):
+    """Exception raised for errors in the invalid grade."""
     pass
